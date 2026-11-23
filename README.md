@@ -2,6 +2,17 @@
 
 2026.12.28(월) – 2027.01.05(화), 8박 9일 일본 연말연시 여행 후보 3코스(규슈 종단 · 세토내해 · 나고야·중부·호쿠리쿠)를 비교하는 모바일 우선 정적 웹사이트입니다. 한국어/日本語 전환을 지원합니다.
 
+## 🔗 사이트 주소
+
+**https://derek-94.github.io/japan-winter-trip/**
+
+| 페이지 | 주소 |
+|---|---|
+| 홈 (세 코스 비교) | https://derek-94.github.io/japan-winter-trip/ |
+| ① 규슈 종단 | https://derek-94.github.io/japan-winter-trip/kyushu.html |
+| ② 세토내해 | https://derek-94.github.io/japan-winter-trip/setouchi.html |
+| ③ 나고야·중부·호쿠리쿠 | https://derek-94.github.io/japan-winter-trip/hokuriku.html |
+
 ## 열기
 
 - **로컬:** `index.html`을 브라우저에서 바로 열면 됩니다(서버 불필요). 모든 경로는 상대 경로입니다. 코스 페이지 주소는 `kyushu.html`, `setouchi.html`, `hokuriku.html`입니다.
