@@ -1,110 +1,93 @@
-# 일본에서 보내는 겨울, 세 가지 여행 / 日本で過ごす冬、3つの旅
+# 일본 연말연시 여행 · 日本の年末年始旅行
 
-2026.12.28(월) – 2027.01.05(화), 8박 9일 일본 연말연시 여행 후보 3코스(규슈 종단 · 세토내해 · 나고야·중부·호쿠리쿠)를 비교하는 모바일 우선 정적 웹사이트입니다. 한국어/日本語 전환을 지원합니다.
+2026-12-28 ~ 2027-01-05 (8박 9일) 일본 연말연시 여행의 **코스 후보**를 모바일에서 보기 좋게 정리한 정적 웹사이트입니다. 한국어/日本語 전환을 지원합니다.
 
 ## 🔗 사이트 주소
 
-**https://derek-94.github.io/japan-winter-trip/**
+- 홈 (코스 후보 목록): https://derek-94.github.io/japan-winter-trip/
+- 코스 1 · 기타큐슈~오카야마~오사카: https://derek-94.github.io/japan-winter-trip/course1.html
+- 코스 2: 준비 중
 
-| 페이지 | 주소 |
-|---|---|
-| 홈 (세 코스 비교) | https://derek-94.github.io/japan-winter-trip/ |
-| ① 규슈 종단 | https://derek-94.github.io/japan-winter-trip/kyushu.html |
-| ② 세토내해 | https://derek-94.github.io/japan-winter-trip/setouchi.html |
-| ③ 나고야·중부·호쿠리쿠 | https://derek-94.github.io/japan-winter-trip/hokuriku.html |
+## 구조
 
-## 열기
-
-- **로컬:** `index.html`을 브라우저에서 바로 열면 됩니다(서버 불필요). 모든 경로는 상대 경로입니다. 코스 페이지 주소는 `kyushu.html`, `setouchi.html`, `hokuriku.html`입니다.
-- **로컬 서버(선택):** `python3 -m http.server 8000` 실행 후 http://localhost:8000
-- **배포:** 폴더 전체를 GitHub Pages, Netlify, Cloudflare Pages 등 정적 호스팅에 그대로 올리면 됩니다. 빌드 과정은 없습니다.
-
-## 파일 구조
-
-```text
-japan-winter-trip/
-├── index.html              # 홈: 코스 카드 3개 + 세 코스 비교표 + 연말연시 주의사항
-├── kyushu.html             # 코스 ① 규슈 종단 페이지
-├── setouchi.html           # 코스 ② 세토내해 페이지
-├── hokuriku.html           # 코스 ③ 나고야·중부·호쿠리쿠페이지
-├── assets/
-│   ├── css/style.css       # 모바일 우선 스타일 (320px ~ 1280px+)
-│   ├── js/data.js          # translations(UI 문자열) + courses(코스·일정·지도·사진 데이터)
-│   ├── js/credits.js       # 사진 작가·라이선스 (Wikimedia Commons 메타데이터에서 생성)
-│   ├── js/main.js          # 렌더링, 언어 전환, 지도, 갤러리, 라이트박스
-│   └── images/             # WebP 23장 × 2사이즈 (1600px / 720px)
-└── README.md
+```
+index.html          홈 — 코스 후보 카드 (1코스: 상세 페이지 링크, 2코스: 준비 중)
+course1.html        코스 1 상세 — 개요·숙박표, 광역 지도, 날짜별 일정, 기차 가이드, 여행지별 안내(사진·세부 지도), 주의사항
+assets/css/style.css
+assets/js/data.js    모든 콘텐츠와 번역 (COURSES, PLACES, TRANSLATIONS)
+assets/js/main.js    렌더링, 언어 전환, 지도, 갤러리·라이트박스
+assets/js/credits.js 사진 출처 (Wikimedia Commons 메타데이터에서 생성)
+assets/images/       WebP 사진 (1600px + 720px 썸네일)
 ```
 
-### 콘텐츠 수정
+### 코스 2 추가하는 법
 
-- 세 코스 페이지는 같은 구조이고 `<body data-page="코스id">`만 다릅니다. 내용은 모두 데이터에서 렌더링됩니다.
-- 문구는 모두 `assets/js/data.js`에 `{ ko, ja }` 쌍으로 들어 있습니다. UI 문자열은 `TRANSLATIONS`, 코스 내용은 `COURSES`.
-- 코스별 `stops[].nights` 합계가 화면의 "숙박 합계 N박"으로 자동 표시됩니다(현재 세 코스 모두 8박).
-- 사진 교체: `assets/images/`에 `이름.webp`(1600px)와 `이름-sm.webp`(720px)를 넣고 `COURSES[].photos`의 `key`와 `credits.js`의 항목을 함께 바꿉니다.
+1. `assets/js/data.js`의 `course2`에 코스 1과 같은 형식으로 내용을 채우고 `status: "ready"`로 변경
+2. `course1.html`을 복사해 `course2.html`로 만들고 `<body data-page="course2">`로 변경 (제목·OG 태그도 수정)
+3. 홈 카드가 자동으로 상세 페이지 링크로 바뀝니다
+
+## 실행
+
+빌드 과정이 없습니다. 폴더를 아무 정적 서버로 열면 됩니다.
+
+```bash
+python3 -m http.server 8000
+```
+
+GitHub Pages는 `main` 브랜치 루트에서 자동 배포됩니다.
 
 ## 기능
 
-| 기능 | 구현 |
-|---|---|
-| 한국어 / 日本語 전환 | 헤더 토글, `localStorage` 저장(차단 시 기본 한국어), `<html lang>` 전환, 전환 시 스크롤 위치·열린 갤러리·지도 상태 유지 |
-| 페이지 구성 | 홈(`index.html`)의 카드를 누르면 코스별 페이지(`kyushu.html` / `setouchi.html` / `hokuriku.html`)로 이동. 코스 페이지에는 히어로·지도·이동 순서·날짜별 일정·갤러리·장단점, 이전/다음 코스, 비교표 링크가 있음. 하단 내비: 홈 / 규슈 / 세토내해 / 호쿠리쿠 / 비교 |
-| 언어 유지 | 선택한 언어가 `localStorage`에 저장되어 페이지를 옮겨도 유지 |
-| 지도 3개 | Leaflet + OpenStreetMap 타일, 번호 마커, 방문 순서 점선(개략 동선), 언어별 팝업, `fitBounds`, 휠 줌 기본 OFF, 터치 기기는 "지도 조작 켜기" 후 한 손가락 드래그 |
-| 지도 실패 대비 | Leaflet 로딩 실패 시 안내문 표시, 타일 오류 시 안내 오버레이, 텍스트 이동 순서 + 장소별 Google 지도 링크 + OSM 링크 항상 제공 |
-| 사진 갤러리 | 대표 사진 항상 표시, `<details>`로 '사진 더 보기' 접기/펼치기, 모바일 2열 / 600px 이상 3열 |
-| 라이트박스 | 이전/다음, 닫기, ESC, ←/→, 스와이프(좌우 이동, 아래로 닫기), 포커스 트랩·복귀, 배경 스크롤 잠금 |
-| 이미지 | 대표 이미지 우선 로딩, 나머지 `loading="lazy"`, WebP, `width/height`·`aspect-ratio`로 CLS 방지, 로드 실패 시 대체 표시 |
-| 접근성 | 터치 영역 44px 이상, 포커스 스타일, 이미지 `alt`/버튼 `aria-label`, 건너뛰기 링크, 키보드로 모든 기능 사용 가능 |
+- 한국어/日本語 토글 (`localStorage` 저장, `html lang` 전환, 스크롤 위치 유지)
+- Leaflet + OpenStreetMap 지도: 광역 동선(교통수단별 선, 숙박/환승/공항 구분, 오카야마 = 환승역) + 지역별 세부 지도 5개 (화면 근처에서 지연 로딩)
+- 날짜별 타임라인 카드 (이동·관광·휴식, 숙박지), 기차 4구간 가이드 (JR 패스 미사용)
+- 지역별 사진: 대표 1장 + ‘사진 더 보기’ 펼치기, 라이트박스 (ESC·방향키·스와이프)
+- `확정` / `방문 후보` / `확인 필요` 표시로 미확정 정보를 구분
+- 지도·사진 로드 실패 시 대체 표시, 텍스트 경로와 Google 지도 링크는 항상 제공
 
-## 오프라인에서
+## 추가 확인이 필요한 것
 
-| 동작함 | 동작하지 않음 |
-|---|---|
-| 모든 텍스트·일정·비교표·주의사항, 언어 전환, 사진(로컬 파일), 갤러리, 라이트박스, 텍스트 이동 순서 | 지도(Leaflet 스크립트·OSM 타일이 외부 CDN), 웹폰트(Noto는 시스템 폰트로 대체), 외부 링크 |
+- 항공편 시각 (12/28 저녁편 가정)
+- 신칸센 열차편·예약 개시일·운임, 연말연시 노조미 전석 지정 여부 — 사이트에 금액은 적지 않았습니다
+- 마린라이너 운임·지정석 요금, IC카드 이용 조건
+- 소요 시간은 참고치 (고쿠라→오카야마 약 1시간 40분 안팎 등)
+- 고쿠라성, 리쓰린 공원, 하치만야마 로프웨이, 식당·우동집의 연말연시 영업
+- 기타큐슈공항 버스 막차, 간몬 연락선·인도터널 운영
 
-## 외부 의존성
+## 외부 라이브러리
 
-- **Leaflet 1.9.4** (BSD-2-Clause): `https://unpkg.com/leaflet@1.9.4/`
-- **OpenStreetMap 타일** (© OpenStreetMap contributors, ODbL): `https://tile.openstreetmap.org/`. [타일 이용 정책](https://operations.osmfoundation.org/policies/tiles/)에 따라 저작자 표시를 지도에 넣었습니다. 트래픽이 많은 공개 서비스로 운영하려면 별도 타일 제공자 사용을 검토하세요.
-- **Google Fonts**: Noto Sans KR/JP, Noto Serif KR/JP (SIL OFL)
+- [Leaflet 1.9.4](https://leafletjs.com/) (unpkg CDN), 지도 타일 © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors
+- Google Fonts: Noto Sans/Serif KR·JP
 
-API 키, 서버, DB, 빌드 도구는 사용하지 않습니다.
+## 사진 출처
 
-## 사진 출처 및 라이선스
+모든 사진은 Wikimedia Commons에서 가져왔고 크기만 줄였습니다. 홈 히어로는 기요미즈데라 사진(Martin Falbisoner, CC BY-SA 4.0)을 사용합니다.
 
-모든 사진은 Wikimedia Commons에서 가져왔고, 리사이즈와 WebP 변환 외에는 수정하지 않았습니다. 사이트 하단의 "사진 출처 및 라이선스"와 라이트박스 캡션에도 같은 내용이 표시됩니다. 일부 사진은 촬영 계절이 여행 시기(겨울)와 다릅니다.
-
-| 파일 | 작가 | 라이선스 | 원본 |
-|---|---|---|---|
-| `hokuriku-01-shirakawago-snow.webp` | Suicasmo | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Shirakawa-go_20170202-3.jpg) |
-| `hokuriku-02-nagoya-sakae.webp` | そらみみ (Soramimi) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:View_of_Sakae_Area_from_glass_roof_of_Oasis_21.JPG) |
-| `hokuriku-03-gero-onsen.webp` | Alpsdake | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Hida_River_and_Gero_Onsen_from_Mutsumi_Bridge.jpg) |
-| `hokuriku-04-takayama-sanmachi.webp` | Raita Futo from Tokyo, Japan | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Hida_Takayama_old_town_streets_(48519369602).jpg) |
-| `hokuriku-05-kanazawa-higashichaya.webp` | Raita Futo from Tokyo, Japan | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Higashi_Chaya_District_(50154601217).jpg) |
-| `hokuriku-06-kenrokuen-yukitsuri.webp` | そらみみ | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Yukitsuri_in_Kenroku_Garden.jpg) |
-| `hokuriku-07-shirakawago-village.webp` | Raita Futo from Tokyo, Japan | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Winter_in_Shirakawa-go_(51815451686).jpg) |
-| `kyushu-01-kagoshima-sakurajima.webp` | そらみみ | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Kagoshima_City_and_Mount_Sakurajima_from_Mount_Shiroyama_3.JPG) |
-| `kyushu-02-fukuoka-tenjin.webp` | Chihaya Sta | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | [Commons](https://commons.wikimedia.org/wiki/File:FukuokaTenjin_Nishidori_Avenue.jpg) |
-| `kyushu-03-hakata-nakasu.webp` | Yoshikazu TAKADA from Tokyo, Japan | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Nakasu_Yatai_Stalls_(19979437930).jpg) |
-| `kyushu-04-sakurajima-lava.webp` | そらみみ | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Lava_rocks_near_Hakamagoshi_Crossroads.jpg) |
-| `kyushu-05-ibusuki-sandbath.webp` | MaedaAkihiko | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Ibusuki-sand-bath_Saraku.jpg) |
-| `kyushu-06-kirishima-onsen.webp` | Ray_go | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | [Commons](https://commons.wikimedia.org/wiki/File:Kirishima_Maruo_Onsen.jpg) |
-| `kyushu-07-kaimondake-sea.webp` | 名古屋太郎 | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | [Commons](https://commons.wikimedia.org/wiki/File:Kaimondake_frm_sea.jpg) |
-| `kyushu-08-ibusuki-sands.webp` | BirdsEyeLV | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | [Commons](https://commons.wikimedia.org/wiki/File:Ibusuki_hot_sands_-_panoramio.jpg) |
-| `setouchi-01-itsukushima-torii.webp` | Jakub Hałun | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Itsukushima-jinja_torii_at_sunset,_Miyajima,_Japan,_20240816_1812_4144.jpg) |
-| `setouchi-02-hiroshima-hondori.webp` | そらみみ | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Hiroshima-Hondori_Shopping_Street_at_dusk.jpg) |
-| `setouchi-03-miyajima-coast.webp` | Jakub Hałun | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Sunset_on_the_coast_of_Miyajima_island,_20240816_1803_4107.jpg) |
-| `setouchi-04-onomichi-senkoji.webp` | そらみみ | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:View_of_Onomichi_Bridge_and_Onomichi_Channel_near_Senkoji_Temple.jpg) |
-| `setouchi-05-onomichi-street.webp` | RitikaPahwa4444 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Onomichi_44.jpg) |
-| `setouchi-06-shimanami.webp` | Fabimaru | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Shimanami_kaid%C5%8D_to_Tatara_Bridge.jpg) |
-| `setouchi-07-kurashiki-bikan.webp` | Suicasmo | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Kurashiki_Bikan_historical_quarter_20190324-3.jpg) |
-| `setouchi-08-onomichi-catpath.webp` | そらみみ | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Narrow_Path_of_Cats_in_Onomichi,_Hiroshima_1.jpg) |
-
-CC BY-SA 사진의 리사이즈본은 같은 라이선스(CC BY-SA)로 배포됩니다.
-
-## 참고 / 주의
-
-- 일정은 **선택을 위한 초안**입니다. 항공편·숙소·교통패스·개별 시설 영업·요금은 확정되지 않았습니다.
-- 지도 좌표는 주요 도시·지역 중심의 근삿값이며, 선은 실제 철도·도로·페리 경로가 아닌 방문 순서를 나타냅니다.
-- 참고: [JNTO 영업시간·휴무](https://faq.japan-travel.jnto.go.jp/en/plan/business-hours-and-holidays/), [japan-guide.com 연말연시](https://www.japan-guide.com/e/e2276.html), [Leaflet Quick Start](https://leafletjs.com/examples/quick-start/)
+| 지역 | 장소 | 작가 | 라이선스 | 원본 |
+|---|---|---|---|---|
+| 기타큐슈 | 모지코역 | ゴーヤーズ | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Mojiko_Station_at_night_(April_2019,_after_renovation).jpg) |
+| 기타큐슈 | 고쿠라성 | Stjepko Krehula | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Kokura_Castle_2024-09-04.jpg) |
+| 기타큐슈 | 고쿠라성 정원 | そらみみ (Soramimi) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Shoin_in_Garden_of_Kokura_Castle.JPG) |
+| 기타큐슈 | 탄가시장 | Thomas Au | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Tanga_Market_Kokura,_Japan_2017-11-26_(27550010079).jpg) |
+| 기타큐슈 | 모지코 레트로 | 663highland | [CC BY 2.5](https://creativecommons.org/licenses/by/2.5) | [Commons](https://commons.wikimedia.org/wiki/File:140721_Mojiko_Retro_Kitakyushu_Japan01s3.jpg) |
+| 기타큐슈 | 간몬해협 | Ka23 13 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:KanmonStraits_20241220_153314.jpg) |
+| 기타큐슈 | 아카마 신궁 | そらみみ (Soramimi) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Ryuguden_Hall_of_Akama_Shrine.JPG) |
+| 다카마쓰 | 세토대교 | Kanchi1979 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:JP-Kagawa-Great-Seto-Bridge-Minami_Bisan-Seto-Bridge.jpg) |
+| 다카마쓰 | 기쿠게쓰테이 | ブルーノ・プラス | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Ritsurin_garden_kikugetsutei.jpg) |
+| 다카마쓰 | 리쓰린 공원 | Sei F | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Ritsurin_Garden,_Kagawa_Prefecture;_November_2019_(07).jpg) |
+| 다카마쓰 | 쾌속 마린라이너 | MaedaAkihiko | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Series223-5000-5007_Marine-liner-8.jpg) |
+| 다카마쓰 | 선포트 다카마쓰 | 663highland | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:070426_Sunport-Takamatsu_Takamatsu_Kagawa_pref_Japan01s.jpg) |
+| 다카마쓰 | 사누키 우동 | sekido | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Kama-age_sanuki_udon_by_sekido_in_Takamatsu,_Kagawa.jpg) |
+| 오사카 | 도톤보리 | Martin Falbisoner | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Dotonbori,_Osaka,_at_night,_November_2016.jpg) |
+| 오사카 | 우메다 스카이빌딩 | Martin Falbisoner | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Umeda_Sky_Building,_Osaka,_November_2016_-02.jpg) |
+| 오사카 | 덴진바시스지 상점가 | Suikotei | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Tenjinbashi-suji-2018-1.jpg) |
+| 오사카 | 오사카성 | Sakai Yayoi | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) | [Commons](https://commons.wikimedia.org/wiki/File:Osaka_Castle_and_Gokurakubashi_Bridge.jpg) |
+| 교토 | 기요미즈데라 | Martin Falbisoner | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Kiyomizu-dera,_Kyoto,_November_2016_-01.jpg) |
+| 교토 | 산넨자카 | Andrea Schaffer from Sydney, Australia | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Sannenzaka_street,_Kyoto_(3811257874).jpg) |
+| 교토 | 야사카 신사 서루문 | DXR | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Nishiromon_Gate,_Yasaka_Shrine,_Kyoto,_West_view_20190416_1.jpg) |
+| 교토 | 야사카 신사 무전 | Basile Morin | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:White_paper_lanterns_hanging_in_Buden_Yasaka_Shrine_in_Kyoto_Japan.jpg) |
+| 교토 | 하나미코지 거리 | HAGAT hOMSZE | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) | [Commons](https://commons.wikimedia.org/wiki/File:JP_%E6%97%A5%E6%9C%AC_Japan_%E4%BA%AC%E9%83%BD_Kyoto_Higashiyama-ku_Gion_%E8%8A%B1%E8%A6%8B%E5%B0%8F%E8%B7%AF%E9%80%9A_Hanamikoji_Dori_10am_morning_June_2026_N13P_16.jpg) |
+| 오미하치만 | 하치만보리 | Takashi Hososhima from Tokyo, Japan | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Hachimanbori_waterway_(10356972954).jpg) |
+| 오미하치만 | 하치만보리 산책로 | 先従隗始 | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) | [Commons](https://commons.wikimedia.org/wiki/File:Hachimanbori_20220227.jpg) |
+| 오미하치만 | 히무레 하치만구 | Asturio Cantabrio | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Himure-hachimangu_torii_ac_(1).jpg) |
+| 오미하치만 | 하치만야마 로프웨이 | Ryosuke Yagi | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Hachiman%27yama_Ropeway.jpg) |
